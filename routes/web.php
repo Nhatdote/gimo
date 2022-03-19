@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return 12345;
 });
 
 Route::get('/users', [Controller::class, 'users'])->name('users');
