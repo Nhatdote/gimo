@@ -29,14 +29,14 @@
 
     <div id="gimo" class="d-flex flex-column" style="height: 100vh; overflow: hidden">
         <div id="header" class="pb-3">
-            <div class="p-3 bg-success text-center">
+            <div class="p-2 bg-success text-center">
                 <h3 class="text-white">{{ __('🙆‍♂️ HELLO GIMO 🙆‍♂️') }}</h3>
             </div>
 
             @if ($crumbs = config('gimo.crumbs'))
                 <div id="crumb" style="background-color: whitesmoke">
                     <div class="container">
-                        <div class="d-flex p-3 align-items-center">
+                        <div class="d-flex p-2 align-items-center">
                             @foreach ($crumbs as $k => $c)
                                 @if (empty($c['url']))
                                     <span class="d-flex align-items-center text-muted">
@@ -62,12 +62,6 @@
 
         <div id="main" style="overflow: auto; flex-grow: 1">
             @yield('content')
-        </div>
-
-        <div id="fotter">
-            <div class="p-3">
-                <div class="text-center text-muted">💛 Nhatdote 💜</div>
-            </div>
         </div>
     </div>
 
