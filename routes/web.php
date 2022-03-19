@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/users', [Controller::class, 'users'])->name('users');
+Route::get('/departments', [Controller::class, 'departments'])->name('departments');
+Route::get('/export', [Controller::class, 'export'])->name('export');
