@@ -16,15 +16,40 @@ class Department extends Model
         'parent_id'
     ];
 
-    public function users() {
+    public function users()
+    {
         return $this->hasMany(User::class, 'department_id');
     }
 
-    public function parent() {
+    public function parent()
+    {
         return $this->belongsTo(static::class, 'parent_id');
     }
 
-    public static function fields() {
+    public function scopeFilters($query, $data)
+    {
+        if (!empty($data['parent_id'])) {
+            $query->where('parent_id', $data['parent_id']);
+        }
+
+        return $query;
+    }
+
+    public static function parse($items)
+    {
+        foreach ($items as $a) {
+            if ($a->parent) {
+                $a->title = $a->parent->name . ' > ' . $a->name;
+            } else {
+                $a->title = $a->name;
+            }
+        }
+
+        return $items;
+    }
+
+    public static function fields()
+    {
         return [
             'name' => [
                 'type' => 'text',

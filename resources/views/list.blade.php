@@ -1,39 +1,47 @@
-<div class="col-md-8 h-100 d-flex flex-column">
-    <div class="table-responsive flex-grow-1 border">
-        <table class="table table-stripped">
-            <tbody>
+<div class="col-md-8 h-100 d-flex flex-column list-items">
+    <div class="table-responsive flex-grow-1">
+        <table class="table table-stripped table-bordered">
+            <thead>
                 <tr class="text-left">
                     @foreach ($fields as $f)
                         <th style="position: sticky; top: -1px; z-index: 2; background: white">{{ $f['label'] }}</th>
                     @endforeach
                 </tr>
-            </tbody>
+            </thead>
 
             <tbody>
-                @foreach ($items as $item)
-                    <tr class="text-left">
-                        @foreach ($fields as $k => $f)
-                            <td>
-                                @switch($f['type'])
-                                    @case('date')
-                                        {{ Carbon\Carbon::parse($item->$k)->format('H:i d/m/Y') }}
-                                    @break
-
-                                    @case('enum')
-                                        {{ $f['display'][$item->$k] ?? '' }}
-                                    @break
-
-                                    @case('model')
-                                        {{ $item[$f['relation']][$f['field']] ?? '' }}
-                                    @break
-
-                                    @default
-                                        {{ $item->$k }}
-                                @endswitch
-                            </td>
-                        @endforeach
+                @if (!$items->count())
+                    <tr class="text-center text-muted">
+                        <td colspan="{{ count($fields) }}" class="py-5">{{ __('Data is not availble') }}
+                        </td>
                     </tr>
-                @endforeach
+                @else
+                    @foreach ($items as $item)
+                        <tr class="text-left">
+                            @foreach ($fields as $k => $f)
+                                <td>
+                                    @switch($f['type'])
+                                        @case('date')
+                                            {{ Carbon\Carbon::parse($item->$k)->format('H:i d/m/Y') }}
+                                        @break
+
+                                        @case('enum')
+                                            {{ $f['display'][$item->$k] ?? '' }}
+                                        @break
+
+                                        @case('model')
+                                            {{ $item[$f['relation']][$f['field']] ?? '' }}
+                                        @break
+
+                                        @default
+                                            {{ $item->$k }}
+                                    @endswitch
+                                </td>
+                            @endforeach
+                        </tr>
+                    @endforeach
+                @endif
+
             </tbody>
         </table>
     </div>

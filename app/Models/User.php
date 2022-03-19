@@ -46,11 +46,39 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function department() {
+    public function department()
+    {
         return $this->belongsTo(Department::class, 'department_id');
     }
 
-    public static function fields() {
+    public function scopeFilters($query, $data)
+    {
+        //có thể làm tổng quát bàng cách foreach và check theo field type
+        if (!empty($data['first_name'])) {
+            $query->where('first_name', 'like', "%{$data['first_name']}%");
+        }
+
+        if (!empty($data['last_name'])) {
+            $query->where('last_name', 'like', "%{$data['last_name']}%");
+        }
+
+        if (!empty($data['department_id'])) {
+            $query->where('department_id', $data['department_id']);
+        }
+
+        if (isset($data['active'])) {
+            $query->where('active', $data['active']);
+        }
+
+        if (isset($data['verified'])) {
+            $query->where('verified', $data['verified']);
+        }
+
+        return $query;
+    }
+
+    public static function fields()
+    {
         return [
             'first_name' => [
                 'type' => 'text',
@@ -88,12 +116,4 @@ class User extends Authenticatable
             ]
         ];
     }
-
-    // public static function collection($items) {
-    //     foreach ($items as $item) {
-    //         $item->department_title = $item->department ? $item->department->name : ' - ';
-    //     }
-
-    //     return $items;
-    // }
 }

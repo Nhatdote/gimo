@@ -28,7 +28,7 @@ class Controller extends BaseController
         return view('index');
     }
 
-    public static function users()
+    public static function users(Request $request)
     {
         Config::set('gimo.crumbs', [
             ['url' => route('index'), 'label' => __('Home'), 'icon' => 'home'],
@@ -37,13 +37,27 @@ class Controller extends BaseController
 
 
         $fields = User::fields();
-        $items = User::with('department')->paginate(20);
+        $items = User::with('department');
         $model = 'user';
+
+        if ($request->ajax && $request->filter) {
+            $filters = $request->except('ajax', 'filter');
+            $items = $items->filters($filters)->paginate(20);
+
+            $html = view('list', compact('items', 'fields'))->render();
+
+            return response()->json([
+                'status' => 1,
+                'html' => $html
+            ]);
+        }
+
+        $items = $items->paginate(20);
 
         return view('render', compact('items', 'fields', 'model'));
     }
 
-    public static function departments()
+    public static function departments(Request $request)
     {
         Config::set('gimo.crumbs', [
             ['url' => route('index'), 'label' => __('Home'), 'icon' => 'home'],
@@ -51,9 +65,23 @@ class Controller extends BaseController
         ]);
 
 
-        $items = Department::paginate(20);
+        $items = Department::with('parent');
         $fields = Department::fields();
         $model = 'department';
+
+        if ($request->ajax && $request->filter) {
+            $filters = $request->except('ajax', 'filter');
+            $items = $items->filters($filters)->paginate(20);
+
+            $html = view('list', compact('items', 'fields'))->render();
+
+            return response()->json([
+                'status' => 1,
+                'html' => $html
+            ]);
+        }
+
+        $items = $items->paginate(20);
 
         return view('render', compact('items', 'fields', 'model'));
     }
@@ -67,11 +95,11 @@ class Controller extends BaseController
         if ($object == 'user') {
             $model = User::class;
             $name = 'users.xlsx';
-            $items = User::with('department')->get();
+            $items = User::with('department')->filters($request->all())->get();
         } else {
             $model = Department::class;
             $name = 'departments.xlsx';
-            $items = Department::with('parent')->get();
+            $items = Department::with('parent')->filters($request->all())->get();
         }
 
         return Excel::download(new ExportCustom($model, $fields, $items), $name);
