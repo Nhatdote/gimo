@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -17,7 +18,24 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public static function users() {
+    public static function index()
+    {
+        Config::set('gimo.crumbs', [
+            ['url' => route('index'), 'label' => __('Home'), 'icon' => 'home']
+        ]);
+
+
+        return view('index');
+    }
+
+    public static function users()
+    {
+        Config::set('gimo.crumbs', [
+            ['url' => route('index'), 'label' => __('Home'), 'icon' => 'home'],
+            ['label' => __('Users'), 'icon' => 'people']
+        ]);
+
+
         $fields = User::fields();
         $items = User::with('department')->paginate(20);
         $model = 'user';
@@ -25,7 +43,14 @@ class Controller extends BaseController
         return view('render', compact('items', 'fields', 'model'));
     }
 
-    public static function departments() {
+    public static function departments()
+    {
+        Config::set('gimo.crumbs', [
+            ['url' => route('index'), 'label' => __('Home'), 'icon' => 'home'],
+            ['label' => __('Departments'), 'icon' => 'layers-outline']
+        ]);
+
+
         $items = Department::paginate(20);
         $fields = Department::fields();
         $model = 'department';
@@ -33,7 +58,8 @@ class Controller extends BaseController
         return view('render', compact('items', 'fields', 'model'));
     }
 
-    public static function export(Request $request) {
+    public static function export(Request $request)
+    {
         $object = $request->object;
         $fields = $request->fields;
         $fields = explode(',', $fields);

@@ -17,13 +17,16 @@
                                 @switch($f['type'])
                                     @case('date')
                                         {{ Carbon\Carbon::parse($item->$k)->format('H:i d/m/Y') }}
-                                        @break
+                                    @break
+
                                     @case('enum')
                                         {{ $f['display'][$item->$k] ?? '' }}
-                                        @break
+                                    @break
+
                                     @case('model')
                                         {{ $item[$f['relation']][$f['field']] ?? '' }}
-                                        @break
+                                    @break
+
                                     @default
                                         {{ $item->$k }}
                                 @endswitch

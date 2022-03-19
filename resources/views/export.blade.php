@@ -5,18 +5,27 @@
             border-radius: 5px;
             height: 100%;
         }
+
         .field-list-item {
             border-bottom: 1px solid #ccc;
             padding: 12px;
         }
+
         .field-list-item:last-child {
             border-bottom: none;
         }
+
     </style>
 
-    <div>
-        <div class="primary text-center mb-3 font-weight-bold">{{ __('Select fields to export') }}</div>
-        <div class="text-muted font-italic small">{{ __('* Select fields in left panel, Drag and drop to sort fields') }}</div>
+    <div id="filter" class="mb-4">
+        <div class="font-weight-bold">{{ __('Filters') }}</div>
+    </div>
+
+    <div id="export">
+        <div class="font-weight-bold">{{ __('Select fields to export') }}</div>
+        <div class="text-muted font-italic small">
+            {{ __('Select fields in left panel, Drag and drop to sort fields') }}
+        </div>
 
 
         <div class="row">
@@ -34,7 +43,11 @@
             </div>
         </div>
 
-        <button type="button" class="btn btn-outline-danger w-100 mt-3" id="export" data-model="{{ $model }}">{{ __('Export') }}</button>
+        <button type="button" class="btn btn-outline-danger w-100 mt-3 d-flex align-items-center justify-content-center"
+            id="export" data-model="{{ $model }}">
+            <ion-icon name="download-outline" class="mr-1"></ion-icon>
+            <span>{{ __('Export') }}</span>
+        </button>
     </div>
 </div>
 
@@ -70,6 +83,7 @@
         }
 
         const model = $(this).attr('data-model');
-        window.location.href = window.location.origin + '/export?object='+ model +'&fields=' + fields.join(',');
+        window.location.href = window.location.origin + '/export?object=' + model + '&fields=' + fields.join(
+            ',');
     });
 </script>

@@ -20,18 +20,47 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
 
 <body>
 
     <div id="gimo" class="d-flex flex-column" style="height: 100vh; overflow: hidden">
-        <div id="header">
-            <div class="p-3 bg-success text-center mb-3">
+        <div id="header" class="pb-3">
+            <div class="p-3 bg-success text-center">
                 <h3 class="text-white">{{ __('🙆‍♂️ HELLO GIMO 🙆‍♂️') }}</h3>
             </div>
+
+            @if ($crumbs = config('gimo.crumbs'))
+                <div id="crumb" style="background-color: whitesmoke">
+                    <div class="container">
+                        <div class="d-flex p-3 align-items-center">
+                            @foreach ($crumbs as $k => $c)
+                                @if (empty($c['url']))
+                                    <span class="d-flex align-items-center text-muted">
+                                        <ion-icon name="{{ $c['icon'] }}" class="mr-1"></ion-icon>
+                                        {{ $c['label'] }}
+                                    </span>
+                                @else
+                                    <a href="{{ $c['url'] }}" class="d-flex align-items-center">
+                                        <ion-icon name="{{ $c['icon'] }}" class="mr-1"></ion-icon>
+                                        {{ $c['label'] }}
+                                    </a>
+                                @endif
+
+                                @if ($k < count($crumbs) - 1)
+                                    <ion-icon name="chevron-forward-outline" class="text-muted mx-2"></ion-icon>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
 
-        <div id="main" style="overflow: auto">
+        <div id="main" style="overflow: auto; flex-grow: 1">
             @yield('content')
         </div>
 
