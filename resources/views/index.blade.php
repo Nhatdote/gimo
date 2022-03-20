@@ -2,8 +2,8 @@
 
 
 @section('content')
-    <div class="container h-100">
-        <div class="row justify-content-center h-100 my-5">
+    <div class="container">
+        <div class="row justify-content-center my-5">
             <div class="col-md-6">
                 <h3 style="font-weight: 100">{{ __('Menus') }}</h3>
                 <ul class="list-group">

@@ -27,8 +27,8 @@
 
 <body>
 
-    <div id="gimo" class="d-flex flex-column" style="height: 100vh; overflow: hidden">
-        <div id="header" class="pb-3">
+    <div id="gimo">
+        <div id="header" class="pb-3" style="position: sticky; top: 0; z-index: 99">
             <div class="p-2 bg-success text-center">
                 <h3 class="text-white">{{ __('🙆‍♂️ HELLO GIMO 🙆‍♂️') }}</h3>
             </div>

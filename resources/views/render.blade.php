@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <div class="row h-100">
+        <div class="row">
             @include('export')
             @include('list')
         </div>

@@ -30,21 +30,21 @@
         </div>
     </div>
 
-    <div class="export">
+    <div class="export mb-4">
         <div class="font-weight-bold">{{ __('Export') }}</div>
         <div class="text-muted font-italic small">
             {{ __('Select fields in left panel, Drag and drop to sort fields') }}
         </div>
 
         <div class="row mt-2">
-            <div class="col-md-6">
+            <div class="col-6">
                 <div class="field-list" id="field-left">
                     @foreach ($fields as $k => $f)
                         <div class="field-list-item" data-field="{{ $k }}">{{ $f['label'] }}</div>
                     @endforeach
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-6">
                 <div class="field-list" id="field-right">
 
                 </div>

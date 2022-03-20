@@ -1,5 +1,5 @@
-<div class="col-md-8 h-100 d-flex flex-column list-items">
-    <div class="table-responsive flex-grow-1">
+<div class="col-md-8">
+    <div class="table-responsive">
         <table class="table table-stripped table-bordered">
             <thead>
                 <tr class="text-left">
@@ -46,6 +46,6 @@
         </table>
     </div>
     <div class="mt-3 d-flex justify-content-center">
-        {!! $items->links('vendor.pagination.bootstrap-4') !!}
+        {!! $items->onEachSide(0)->links('vendor.pagination.bootstrap-4') !!}
     </div>
 </div>
