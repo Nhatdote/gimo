@@ -1,4 +1,4 @@
-<div class="col-md-8">
+<div class="col-md-8 list-items">
     <div class="table-responsive">
         <table class="table table-stripped table-bordered">
             <thead>

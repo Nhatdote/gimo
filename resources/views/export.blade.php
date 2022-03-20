@@ -105,8 +105,6 @@
             url += '&' + $filter.serialize();
         }
 
-        console.log($('.export-with-filter').is(':checked'), url);
-
         window.location.href = url;
     });
 
@@ -133,7 +131,6 @@
                 },
                 beforeSend: function() {
                     if (request !== null) {
-                        console.log(request);
                         request.abort();
                     }
                 },
