@@ -37,12 +37,13 @@ class Controller extends BaseController
 
 
         $fields = User::fields();
-        $items = User::with('department');
+        $items = User::with('department.parent');
         $model = 'user';
 
         if ($request->ajax && $request->filter) {
             $filters = $request->except('ajax', 'filter');
             $items = $items->filters($filters)->paginate(20);
+            $items = User::parse($items);
 
             $html = view('list', compact('items', 'fields'))->render();
 
@@ -53,6 +54,7 @@ class Controller extends BaseController
         }
 
         $items = $items->paginate(20);
+        $items = User::parse($items);
 
         return view('render', compact('items', 'fields', 'model'));
     }
@@ -72,6 +74,7 @@ class Controller extends BaseController
         if ($request->ajax && $request->filter) {
             $filters = $request->except('ajax', 'filter');
             $items = $items->filters($filters)->paginate(20);
+            $items = Department::parse($items);
 
             $html = view('list', compact('items', 'fields'))->render();
 
@@ -82,6 +85,7 @@ class Controller extends BaseController
         }
 
         $items = $items->paginate(20);
+        $items = Department::parse($items);
 
         return view('render', compact('items', 'fields', 'model'));
     }
@@ -100,6 +104,10 @@ class Controller extends BaseController
             $model = Department::class;
             $name = 'departments.xlsx';
             $items = Department::with('parent')->filters($request->all())->get();
+        }
+
+        if (method_exists($model, 'parse')) {
+            $items = $model::parse($items);
         }
 
         return Excel::download(new ExportCustom($model, $fields, $items), $name);

@@ -40,6 +40,7 @@ class Department extends Model
         foreach ($items as $a) {
             if ($a->parent) {
                 $a->title = $a->parent->name . ' > ' . $a->name;
+                $a->parent_title = $a->parent->name;
             } else {
                 $a->title = $a->name;
             }
@@ -58,8 +59,7 @@ class Department extends Model
             'parent_id' => [
                 'type' => 'model',
                 'label' => __('Parent'),
-                'relation' => 'parent',
-                'field' => 'name'
+                'display' => 'parent_title'
             ]
         ];
     }

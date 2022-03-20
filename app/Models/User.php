@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -77,6 +78,26 @@ class User extends Authenticatable
         return $query;
     }
 
+    public static function parse($items)
+    {
+        foreach ($items as $item) {
+            if ($d = $item->department) {
+                $parent = $d->parent;
+                if ($parent) {
+                    $item->department_title = $d->parent->name . ' > ' . $d->name;
+                } else {
+                    $item->department_title = $d->name;
+                }
+            }
+
+            $item->verified_title = $item->verified ? __('Yes') : __('No');
+            $item->status_title = $item->active ? __('Active') : __('Inactive');
+            $item->created_at_format = Carbon::parse($item->created_at)->format('H:i d/m/Y');
+        }
+
+        return $items;
+    }
+
     public static function fields()
     {
         return [
@@ -91,28 +112,22 @@ class User extends Authenticatable
             'department_id' => [
                 'type' => 'model',
                 'label' => __('Department'),
-                'relation' => 'department',
-                'field' => 'name'
+                'display' => 'department_title'
             ],
             'verified' => [
                 'type' => 'enum',
-                'display' => [
-                    1 => __('Yes'),
-                    0 => __('No')
-                ],
-                'label' => __('Verified')
+                'label' => __('Verified'),
+                'display' => 'verified_title'
             ],
             'active' => [
                 'type' => 'enum',
-                'display' => [
-                    1 => __('Active'),
-                    0 => __('Inactive')
-                ],
-                'label' => __('Status')
+                'label' => __('Status'),
+                'display' => 'verified_title'
             ],
             'created_at' => [
                 'type' => 'date',
-                'label' => 'Created at'
+                'label' => 'Created at',
+                'display' => 'created_at_format'
             ]
         ];
     }

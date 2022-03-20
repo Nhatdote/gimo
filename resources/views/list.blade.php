@@ -24,22 +24,11 @@
                         <tr class="text-left">
                             @foreach ($fields as $k => $f)
                                 <td>
-                                    @switch($f['type'])
-                                        @case('date')
-                                            {{ Carbon\Carbon::parse($item->$k)->format('H:i d/m/Y') }}
-                                        @break
-
-                                        @case('enum')
-                                            {{ $f['display'][$item->$k] ?? '' }}
-                                        @break
-
-                                        @case('model')
-                                            {{ $item[$f['relation']][$f['field']] ?? '' }}
-                                        @break
-
-                                        @default
-                                            {{ $item->$k }}
-                                    @endswitch
+                                    @if (!empty($f['display']))
+                                        {{ $item[$f['display']] }}
+                                    @else
+                                        {{ $item->$k }}
+                                    @endif
                                 </td>
                             @endforeach
                         </tr>

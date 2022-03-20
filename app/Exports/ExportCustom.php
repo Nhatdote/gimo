@@ -15,8 +15,8 @@ class ExportCustom implements FromArray, WithHeadings, ShouldAutoSize
     protected $fields;
     protected $items;
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
 
     public function __construct($model, $fields, $items)
     {
@@ -40,18 +40,10 @@ class ExportCustom implements FromArray, WithHeadings, ShouldAutoSize
             foreach ($sort as $f) {
                 $config = $fields[$f];
 
-                switch ($config['type']) {
-                    case 'date':
-                        $row[] = Carbon::parse($item->$f)->format('H:i d/m/Y');
-                        break;
-                    case 'enum':
-                        $row[] = $config['display'][$item->$f] ?? '';
-                        break;
-                    case 'model':
-                        $row[] = $item[$config['relation']][$config['field']] ?? '';
-                        break;
-                    default:
-                        $row[] = $item->$f;
+                if (!empty($config['display'])) {
+                    $row[] = $item[$config['display']];
+                } else {
+                    $row[] = $item->$f;
                 }
             }
 
