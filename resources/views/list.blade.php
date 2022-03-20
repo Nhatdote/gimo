@@ -39,6 +39,6 @@
         </table>
     </div>
     <div class="mt-3 d-flex justify-content-center">
-        {!! $items->onEachSide(0)->links('vendor.pagination.bootstrap-4') !!}
+        {!! $items->appends(request()->except('ajax', 'filter'))->onEachSide(0)->links('vendor.pagination.bootstrap-4') !!}
     </div>
 </div>
