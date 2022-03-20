@@ -1,6 +1,10 @@
 <div class="col-md-8 list-items">
     <div class="table-responsive">
-        <table class="table table-stripped table-bordered">
+        <div class="font-weight-bold">
+            <span>{{ request()->is('users') ? __('User list') : __('Department list') }}</span>
+            <small class="font-weight-normal"> - {{ $items->total() . ' ' . __('records') }}</small>
+        </div>
+        <table class="table table-stripped table-bordered mt-2">
             <thead>
                 <tr class="text-left">
                     @foreach ($fields as $f)
